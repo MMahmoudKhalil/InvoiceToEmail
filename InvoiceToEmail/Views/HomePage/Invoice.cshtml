@@ -1,0 +1,98 @@
+﻿@using InvoiceToEmail.Data.Model
+@model List<Invoice>
+@{
+    ViewData["Title"] = "Here is your To Do List";
+}
+
+<h1>Welcome</h1>
+<h3>Here is your Invoices</h3>
+
+<!-- Success Message -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        <strong>  </strong> @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var message = document.getElementById("successMessage");
+            if (message) {
+                message.style.display = "none";
+            }
+        }, 6000);
+    </script>
+}
+
+<a class="btn btn-success" href="/HomePage/CreateInvoice">Create New</a>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="bg-dark text-white">
+                         <th scope="col">#</th> 
+                        <th scope="col">InvNumber</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int index = 1;
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">@index</td>
+                                <td scope="col">@item.InvNumber</td>
+                                <td scope="col">@item.Name</td>
+                                <td scope="col">@item.Price</td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" href="">Edit</a>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmDelete(@item.Id)">Delete</button>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No items found.</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end mt-3">
+                <a class="btn btn-secondary" href="/HomePage">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert2 Library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Confirmation Script -->
+<script>
+    function confirmDelete(todoId) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/HomePage/Delete?ToDoId=' + todoId;
+            }
+        });
+    }
+</script>

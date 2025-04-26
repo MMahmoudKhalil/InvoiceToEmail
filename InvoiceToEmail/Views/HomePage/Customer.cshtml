@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Here is your To Do List";
+}
+
+<h1>Welcome</h1>
+<h3>Here is your Customers</h3>
+
+<!-- Success Message -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        <strong>  </strong> @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var message = document.getElementById("successMessage");
+            if (message) {
+                message.style.display = "none";
+            }
+        }, 6000);
+    </script>
+}
+
+<a class="btn btn-success" href="/HomePage/CreateCustomer">Create New</a>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="bg-dark text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">VatNumber</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int index = 1;
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td>@item.Name</td>
+                                <td>@item.VatNumber</td>
+                                <td>@item.Phone</td>
+                                <td>@item.Email</td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" href="/HomePage/EditCustomer?CuId=@item.Id">Edit</a>
+                                    <a class="btn btn-danger btn-sm" href="/HomePage/Delete?CuId=@item.Id"
+                                       onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No items found.</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end mt-3">
+                <a class="btn btn-secondary" href="/HomePage">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
