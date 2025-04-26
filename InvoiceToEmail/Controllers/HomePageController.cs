@@ -91,8 +91,7 @@ namespace InvoiceToEmail.Controllers
             return View("NotFund");
 
         }
-
-       
+               
         public IActionResult CreateInvoice()
         {
             var customers = dbContext.customers.Select(c => new SelectListItem
